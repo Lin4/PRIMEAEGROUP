@@ -18,7 +18,6 @@
 @dynamic date;
 @dynamic dIFHeader;
 @dynamic e_Mail;
-@dynamic id;
 @dynamic iFName1;
 @dynamic iFName2;
 @dynamic iFName3;
@@ -39,7 +38,6 @@
 @dynamic oVJTitle3;
 @dynamic oVJTitle4;
 @dynamic p_o_Box;
-@dynamic project;
 @dynamic project_id;
 @dynamic sketch_images;
 @dynamic state;
@@ -77,11 +75,9 @@
 @dynamic i_QTY3;
 @dynamic i_QTY4;
 @dynamic i_QTY5;
-
-//start brin
+@dynamic syncStatus;
 @dynamic signature;
 
-//end brin
 
 -(NSDictionary*) toDictionary
 {

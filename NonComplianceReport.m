@@ -4,6 +4,8 @@
 #import "TabAndSplitAppAppDelegate.h"
 #import "PRIMECMAPPUtils.h"
 #import "PRIMECMController.h"
+#import "nonComplianceViewController.h"
+#import "NonComplianceForm.h"
 
 @interface NonComplianceReport ()
 {
@@ -16,18 +18,16 @@
     MBProgressHUD *hud;
     TabAndSplitAppAppDelegate *appDelegate;
     UIBarButtonItem  *btnPrint;
+    NSString * signName;
+    nonComplianceViewController *CompliForm;
 }
 
 @end
-
 @implementation NonComplianceReport
-
-@synthesize  scrollView,headerView;
-@synthesize lblImageAttachmentTitle,viewImageAttachmentTitle;
 @synthesize txtContactNo,txtDate,txtPrintedName,txtTo,txtDateIssued,txtProject,txtTitle,txtDateContractCompleted,txtDateContractorStarted,txtDateOfRawReport;
 @synthesize lblProjDec,lblContractorRes,lblCorrectiveActionComp, nonComNotNo, dateCRC;
 @synthesize CNo;
-@synthesize imgSignature;
+@synthesize imgSignature,headerView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,43 +57,35 @@
     [lblContractorRes.layer setBorderWidth: 1.0];
     [lblContractorRes.layer setCornerRadius:8.0f];
     
-    scrollView.scrollsToTop=NO;
     self.tblView.scrollsToTop=YES;
     self.tblView.tableHeaderView = headerView;
     appDelegate=(TabAndSplitAppAppDelegate *)[[UIApplication sharedApplication] delegate];
     UIBarButtonItem  *btnEmail = [[UIBarButtonItem alloc]
                                   initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(createPDF)];
-    
-    
     UIBarButtonItem *Button = [[UIBarButtonItem alloc]
                                initWithTitle:NSLocalizedString(@"New", @"")
                                style:UIBarButtonItemStyleDone
                                target:self
                                action:@selector(showSCompliance:)];
-    
     UIBarButtonItem *Button2 = [[UIBarButtonItem alloc]
                                 initWithTitle:NSLocalizedString(@"Edit", @"")
                                 style:UIBarButtonItemStyleDone
                                 target:self
                                 action:@selector(fnEdit:)];
-    
-    
-    btnPrint = [[UIBarButtonItem alloc]
-                initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(printReport)];
-    
-    
+    UIBarButtonItem *Button3 = [[UIBarButtonItem alloc]
+                                initWithTitle:NSLocalizedString(@"Delete", @"")
+                                style:UIBarButtonItemStyleDone
+                                target:self
+                                action:@selector(fnDelete:)];
+    btnPrint = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(printReport)];
     self.navigationItem.rightBarButtonItems=[NSArray arrayWithObjects:Button, btnEmail,btnPrint, nil];
-    self.navigationItem.leftBarButtonItem=Button2;
+    self.navigationItem.leftBarButtonItems=[NSArray arrayWithObjects:Button2, Button3, nil];
+    
     arrayImages=[[NSMutableArray alloc]init];
     sketchesArray=[[NSMutableArray alloc]init];
     [self populateNonComplianceForm];
 }
 
-
--(IBAction)fnEdit:(id)sender
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNonComplianceForm" object:nil];
-}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -122,47 +114,145 @@
     [fetchRequest setPredicate:predicate];
     NSError *error = nil;
     NSArray *objects = [context executeFetchRequest:fetchRequest error:&error];
-    
     if([objects count] > 0){
         
         NSManagedObject *nonComplianceReportObject = (NSManagedObject *) [objects objectAtIndex:0];
         NSLog(@"Non-Compliance Form object CNo: %@", [nonComplianceReportObject valueForKey:@"non_ComplianceNoticeNo"]);
         
+        NSDateFormatter *dateFormater = [[NSDateFormatter alloc] init];
+        [dateFormater setDateFormat:@"yyyy-MM-dd"];
+        
         txtTitle.text=[nonComplianceReportObject valueForKey:@"non_ComHeader"];
         nonComNotNo.text=[nonComplianceReportObject valueForKey:@"non_ComplianceNoticeNo"];
-        lblProjDec.text=[nonComplianceReportObject valueForKey:@"projectDescription"];
+        
+        id project = [PRIMECMController getProjectFromID:[nonComplianceReportObject valueForKey:@"project_id"]];
+        if (project !=  NULL){
+            lblProjDec.text=[project valueForKey:@"p_description"];
+            txtProject.text=[project valueForKey:@"p_name"];
+        }
         txtContactNo.text=[nonComplianceReportObject valueForKey:@"contractNo"];
         txtTitle.text=[nonComplianceReportObject valueForKey:@"title"];
-        txtProject.text=[nonComplianceReportObject valueForKey:@"project"];
-        txtDateIssued.text=[NSDateFormatter localizedStringFromDate:[nonComplianceReportObject valueForKey:@"dateIssued"]
-                                                          dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
+        
+        txtDateIssued.text=[dateFormater stringFromDate:[nonComplianceReportObject valueForKey:@"dateIssued"]];
         lblContractorRes.text=[nonComplianceReportObject valueForKey:@"contractorResponsible"];
+        
         txtTo.text=[nonComplianceReportObject valueForKey:@"to"];
-        txtDateContractorStarted.text=[NSDateFormatter localizedStringFromDate:[nonComplianceReportObject valueForKey:@"dateContractorStarted"]
-                                                                     dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
-        dateCRC.text=[NSDateFormatter localizedStringFromDate:[nonComplianceReportObject valueForKey:@"dateCRTCB"]
-                                                    dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
+        txtDateContractorStarted.text=[dateFormater stringFromDate:[nonComplianceReportObject valueForKey:@"dateContractorStarted"]];
+        dateCRC.text=[dateFormater stringFromDate:[nonComplianceReportObject valueForKey:@"dateCRTCB"]];
         
-        txtDateContractCompleted.text=[NSDateFormatter localizedStringFromDate:[nonComplianceReportObject valueForKey:@"dateContractorCompleted"]
-                                                                     dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
+        txtDateContractCompleted.text=[dateFormater stringFromDate:[nonComplianceReportObject valueForKey:@"dateContractorCompleted"]];
         
-        txtDateOfRawReport.text=[NSDateFormatter localizedStringFromDate:[nonComplianceReportObject valueForKey:@"dateOfDWRReported"]
-                                                               dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
+        txtDateOfRawReport.text=[dateFormater stringFromDate:[nonComplianceReportObject valueForKey:@"dateOfDWRReported"]];
         
         lblCorrectiveActionComp.text=[nonComplianceReportObject valueForKey:@"descriptionOfNonCompliance"];
         txtPrintedName.text=[nonComplianceReportObject valueForKey:@"printedName"];
-        txtDate.text=[NSDateFormatter localizedStringFromDate:[nonComplianceReportObject valueForKey:@"date"]
-                                                    dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
+        txtDate.text=[dateFormater stringFromDate:[nonComplianceReportObject valueForKey:@"date"]];
         arrayImages  = [[[nonComplianceReportObject valueForKey:@"images_uploaded"] componentsSeparatedByString:@","]mutableCopy];
         sketchesArray  = [[[nonComplianceReportObject valueForKey:@"sketch_images"] componentsSeparatedByString:@","]mutableCopy];
         
-        NSString * signName = [nonComplianceReportObject valueForKey:@"signature"];
+        signName = [nonComplianceReportObject valueForKey:@"signature"];
         imgSignature.image=[PRIMECMController getTheImage:signName];
     }
     [self.tblView reloadData];
     [hud setHidden:YES];
 }
 
+
+
+-(IBAction)fnEdit:(id)sender
+{
+    NSMutableDictionary *nonComplianceReportDTO = [[NSMutableDictionary alloc] init];
+    [nonComplianceReportDTO setValue:txtTitle.text forKey:@"comHeader"];
+    [nonComplianceReportDTO setValue:CNo forKey:@"non_ComplianceNoticeNo"];
+    [nonComplianceReportDTO setValue:txtContactNo.text forKey:@"contractNo"];
+    [nonComplianceReportDTO setValue:lblProjDec.text forKey:@"projectDescription"];
+    [nonComplianceReportDTO setValue:txtProject.text forKey:@"project"];
+    [nonComplianceReportDTO setValue:txtTitle.text forKey:@"title"];
+    [nonComplianceReportDTO setValue:txtDateIssued.text forKey:@"dateIssued"];
+    [nonComplianceReportDTO setValue:lblContractorRes.text forKey:@"contractorResponsible"];
+    [nonComplianceReportDTO setValue:txtTo.text forKey:@"to"];
+    [nonComplianceReportDTO setValue:txtDateContractorStarted.text forKey:@"dateContractorStarted"];
+    [nonComplianceReportDTO setValue:dateCRC.text forKey:@"dateCRTCB"];
+    [nonComplianceReportDTO setValue:txtDateContractCompleted.text forKey:@"dateContractorCompleted"];
+    [nonComplianceReportDTO setValue:txtDateOfRawReport.text forKey:@"dateOfDWRReported"];
+    [nonComplianceReportDTO setValue:lblCorrectiveActionComp.text forKey:@"descriptionOfNonCompliance"];
+    [nonComplianceReportDTO setValue:txtPrintedName.text forKey:@"printedName"];
+    [nonComplianceReportDTO setValue:txtDate.text forKey:@"date"];
+    
+    
+    NSMutableArray *arrM1 = [[NSMutableArray alloc] init];
+    int i = 0;
+    for (id obj in arrayImages){
+        
+        NSMutableDictionary *imageDictionary = [[NSMutableDictionary alloc] init];
+        imageDictionary=[NSMutableDictionary dictionaryWithObjectsAndKeys:
+                         [NSString stringWithFormat:@"%i",i], @"tag",
+                         @"", @"description",
+                         obj, @"name",
+                         nil];
+        
+        
+        [arrM1 addObject:imageDictionary];
+        i++;
+    }
+    
+    NSMutableArray *arrM2 = [[NSMutableArray alloc] init];
+    i = 0;
+    for (id obj in sketchesArray){
+        
+        NSMutableDictionary *imageDictionary = [[NSMutableDictionary alloc] init];
+        imageDictionary=[NSMutableDictionary dictionaryWithObjectsAndKeys:
+                         [NSString stringWithFormat:@"%i",i], @"tag",
+                         @"", @"description",
+                         obj, @"name",
+                         nil];
+        
+        
+        [arrM2 addObject:imageDictionary];
+        i++;
+    }
+    
+    [nonComplianceReportDTO setValue:arrM1 forKey:@"images_uploaded"];
+    [nonComplianceReportDTO setValue:arrM2 forKey:@"sketch_images"];
+    
+    [nonComplianceReportDTO setValue:signName forKey:@"signature"];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNonComplianceForm" object:nil userInfo: nonComplianceReportDTO];
+}
+
+-(IBAction)fnDelete:(id)sender
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeDashboard" object:nil];
+    
+    NonComplianceForm *assp;
+    NSError *retrieveError;
+    
+    NSManagedObjectContext *managedContext = [PRIMECMAPPUtils getManagedObjectContext];
+    
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"NonComplianceForm"
+                                              inManagedObjectContext:managedContext];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(non_ComplianceNoticeNo = %@)", CNo];
+    [fetchRequest setPredicate:predicate];
+    
+    NSArray *fetchedObjects = [managedContext executeFetchRequest:fetchRequest error:&retrieveError];
+    
+    if (fetchedObjects && [fetchedObjects count] > 0) {
+        assp = [fetchedObjects objectAtIndex:0];
+       
+        [managedContext deleteObject:assp];
+        
+        if (![managedContext save:&retrieveError]) {
+            NSLog(@"Whoops, couldn't delete: %@", [retrieveError localizedDescription]);
+        }else{
+            NSLog(@"Deleted: %@", CNo);
+        }
+    }
+    
+}
 
 -(void)saveImageTaken:(UIImage *)imageNew imgName:(NSString *)imgName
 {
@@ -179,7 +269,7 @@
             NSLog(@"[%@] ERROR: attempting to write create Images directory", [self class]);
     }
     
-    NSData *imagData = UIImageJPEGRepresentation(imageNew,0.75f);
+    NSData *imagData = UIImageJPEGRepresentation(imageNew,1.0);
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *fullPath = [folderPath stringByAppendingPathComponent:imgName];
     [fileManager createFileAtPath:fullPath contents:imagData attributes:nil];
@@ -188,8 +278,7 @@
 -(void)printReport
 {
     [self.tblView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-    viewImageAttachmentTitle.hidden=YES;
-    lblImageAttachmentTitle.hidden=YES;
+    
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -216,13 +305,11 @@
     {
         // page 1
         CGContextBeginPage (pdfContext,nil);
-        
         //turn PDF upsidedown
         CGAffineTransform transform = CGAffineTransformIdentity;
         transform = CGAffineTransformMakeTranslation(0, (i+1) *830);
         transform = CGAffineTransformScale(transform, 1.0, -1.0);
         CGContextConcatCTM(pdfContext, transform);
-        
         //Draw view into PDF
         [self.tblView.layer renderInContext:pdfContext];
         CGContextEndPage (pdfContext);
@@ -254,8 +341,7 @@
 -(void)createPDF
 {
     [self.tblView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-    viewImageAttachmentTitle.hidden=YES;
-    lblImageAttachmentTitle.hidden=YES;
+    
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -367,8 +453,7 @@
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
-    viewImageAttachmentTitle.hidden=NO;
-    lblImageAttachmentTitle.hidden=NO;
+    
 }
 
 -(void)createPDFfromUIView:(UIScrollView*)aView saveToDocumentsWithFileName:(NSString*)aFilename
@@ -412,8 +497,11 @@
     }
 }
 
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -464,13 +552,13 @@
         }
         if(indexPath.section==0)
         {
-            cell.lblTitle.hidden=NO;
+            //cell.lblTitle.hidden=NO;
             //cell.imgView.image=[self getImageFromFileName:[NSString stringWithFormat:@"%@.jpg",[arrayImages objectAtIndex:indexPath.row]]];
             cell.imgView.image=[PRIMECMController getTheImage:[arrayImages objectAtIndex:indexPath.row-1]];
         }
         else
         {
-            cell.lblTitle.hidden=YES;
+            //cell.lblTitle.hidden=YES;
             //cell.imgView.image=[self getImageFromFileName:[NSString stringWithFormat:@"%@.jpg",[sketchesArray objectAtIndex:indexPath.row]]];
             cell.imgView.image=[PRIMECMController getTheImage:[sketchesArray objectAtIndex:indexPath.row-1]];
         }

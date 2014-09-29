@@ -55,12 +55,18 @@
     
     NSString *sigName1;
     NSString *sigName2;
-       
+    
+    
+    NSDictionary *sourceDictionary;
+    
+    
+    
 }
 
 @end
 
 @implementation Summary_3_ViewController
+@synthesize smSheetNumber;
 @synthesize contractorRepresentative;
 @synthesize dailyTotal;
 @synthesize date1;
@@ -104,6 +110,8 @@
 @synthesize total_to_date;
 @synthesize  scrollView;
 
+@synthesize sm3class1,sm3class2,sm3class3,sm3class4,sm3class5,sm3act1,sm3act2,sm3act3,sm3act4,sm3act5,sm3no1,sm3no2,sm3no3,sm3no4,sm3no5,sm3hr1,sm3hr2,sm3hr3,sm3hr4,sm3hr5,sm3rate1,sm3rate2,sm3rate3,sm3rate4,sm3rate5,sm3amt1,sm3amt2,sm3amt3,sm3amt4,sm3amt5,sm3dtotal,sm3dtotaldate;
+
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -115,9 +123,65 @@
     return self;
 }
 
+
+
+
+- (id)initWithData:(NSDictionary *)sourceDictionaryParam
+{
+    self = [super init];
+    sourceDictionary = sourceDictionaryParam;
+    return self;
+}
+
+
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    
+    eQSizeandClass1.text=sm3class1;
+    eQSizeandClass2.text=sm3class2;
+    eQSizeandClass3.text=sm3class3;
+    eQSizeandClass4.text=sm3class4;
+    eQSizeandClass5.text=sm3class5;
+    
+    eQIdleActive1.text=sm3act1;
+    eQIdleActive2.text=sm3act2;
+    eQIdleActive3.text=sm3act3;
+    eQIdleActive4.text=sm3act4;
+    eQIdleActive5.text=sm3act5;
+    
+    eQNo1.text=sm3no1;
+    eQNo2.text=sm3no2;
+    eQNo3.text=sm3no3;
+    eQNo4.text=sm3no4;
+    eQNo5.text=sm3no5;
+    
+    eQTotalHours1.text=sm3hr1;
+    eQTotalHours2.text=sm3hr2;
+    eQTotalHours3.text=sm3hr3;
+    eQTotalHours4.text=sm3hr4;
+    eQTotalHours5.text=sm3hr5;
+    
+    eQRAte1.text=sm3rate1;
+    eQRAte2.text=sm3rate2;
+    eQRAte3.text=sm3rate3;
+    eQRAte4.text=sm3rate4;
+    eQRAte5.text=sm3rate5;
+    
+    eQAmount1.text=sm3amt1;
+    eQAmount2.text=sm3amt2;
+    eQAmount3.text=sm3amt3;
+    eQAmount4.text=sm3amt4;
+    eQAmount5.text=sm3amt5;
+    
+    dailyTotal.text= sm3dtotal;
+    total_to_date.text= sm3dtotaldate;
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getImageReviewer1) name:@"DoneSignatureReviewer" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getImageInspector1) name:@"DoneSignatureInspector" object:nil];
     
@@ -144,15 +208,22 @@
     
     
     appDelegate=(TabAndSplitAppAppDelegate *)[[UIApplication sharedApplication] delegate];
- 
+    
     NSDate *today = [NSDate date];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd"];
     NSString *dateString = [dateFormat stringFromDate:today];
-    inspector.text=appDelegate.projPrintedName;
+    inspector.text=appDelegate.username;
     date1.text=dateString;
     date2.text= dateString;
     contractorRepresentative.text = appDelegate.pm;
+    
+
+    
+}
+-(void)populateValues
+{
+    
     
 }
 
@@ -180,7 +251,7 @@
     signature2.image=[self getImageFromFileName:[NSString stringWithFormat:@"%@.jpg",@"Signature_R"] folderPath:folderPath];
     
     
-    }
+}
 
 -(UIImage *)getImageFromFileName:(NSString *)fileName folderPath:(NSString *)folderPath
 {
@@ -198,7 +269,6 @@
     isSignature=@"1";
     signatureViewController=[[SignatureViewController alloc]initWithNibName:@"SignatureViewController" bundle:nil];
     signatureViewController.imageViewTag=@"1";
-    NSLog(@"get URL image");
     [self.navigationController.view addSubview:signatureViewController.view];
     [self createSignatureCloseBtn];
     [self.navigationController.view addSubview:btnCloseSignView];
@@ -210,7 +280,6 @@
     isSignature=@"1";
     signatureViewController=[[SignatureViewController alloc]initWithNibName:@"SignatureViewController" bundle:nil];
     signatureViewController.imageViewTag=@"2";
-    NSLog(@"get URL image");
     [self.navigationController.view addSubview:signatureViewController.view];
     [self createSignatureCloseBtn];
     [self.navigationController.view addSubview:btnCloseSignView];
@@ -378,7 +447,7 @@
     
     if(inspector.text==NULL || inspector.text.length==0 || signature1.image==NULL ||  date1.text==NULL || date1.text.length==0  || date2.text==NULL || date2.text.length==0 || signature2.image==NULL || signature2.image==NULL || dailyTotal.text==NULL || dailyTotal.text.length==0 || total_to_date.text==NULL || total_to_date.text.length==0  )
     {
-      //  contractorRepresentative.text==NULL || contractorRepresentative.text.length==0
+        //  contractorRepresentative.text==NULL || contractorRepresentative.text.length==0
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Empty"
                                                         message:@"Please fill all the fields"
@@ -619,7 +688,7 @@
             field30=eQAmount5.text;
             
         }
-       
+        
         
         sigName1=[NSString stringWithFormat:@"Signature_%@",[self getCurrentDateTimeAsNSString]];
         sigName2=[NSString stringWithFormat:@"Signature_R%@",[self getCurrentDateTimeAsNSString]];
@@ -660,11 +729,11 @@
                            eQTotalHours3:eQTotalHours3.text
                            eQTotalHours4:eQTotalHours4.text
                            eQTotalHours5:eQTotalHours5.text
-                           inspector:appDelegate.projPrintedName
+                           inspector:appDelegate.username
                            project_id:appDelegate.projId
                            signature1:sigName1
                            signature2:sigName2
-                           sMSheetNo:@""
+                           sMSheetNo:smSheetNumber
                            total_to_date:total_to_date.text
                            ];
         
@@ -672,7 +741,7 @@
         
         BOOL singSaveState;
         BOOL singSaveState2;
-
+        
         
         NSArray *pathsSign = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectorySign = [pathsSign objectAtIndex:0];
@@ -681,14 +750,14 @@
         
         
         UIImage *imageSign=[self getSignatureFromFileName:[NSString stringWithFormat:@"%@.jpg",@"Signature_R"] folderPath:folderPathSign];
-        NSData *imaDataSign1 = UIImageJPEGRepresentation(imageSign,0.3);
-        NSData *imaDataSign2 = UIImageJPEGRepresentation(imageSign,0.3);
-
-        singSaveState = [PRIMECMController saveAllImages:sigName1 img:imaDataSign1];
+        NSData *imaDataSign1 = UIImageJPEGRepresentation(imageSign,1.0);
+        NSData *imaDataSign2 = UIImageJPEGRepresentation(imageSign,1.0);
+        
+        singSaveState = [PRIMECMController saveAllImages:sigName1 img:imaDataSign1 syncStatus:SYNC_STATUS_PENDING];
         
         
-        singSaveState2 = [PRIMECMController saveAllImages:sigName2 img:imaDataSign2];
-
+        singSaveState2 = [PRIMECMController saveAllImages:sigName2 img:imaDataSign2 syncStatus:SYNC_STATUS_PENDING];
+        
         
         
         
@@ -708,124 +777,6 @@
 }
 
 
--(void)uploadSignature2
-{
-    
-    uploadingSignature2=YES;
-    
-    
-    
-    NSString *urlLink = [NSString stringWithFormat:@"%@/api/summary3/uploadimages/%@/%@", [PRIMECMAPPUtils getAPIEndpoint], appDelegate.username,sigName2];
-    
-    NSString *unicodeLink = [urlLink stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSLog(@"URL---%@",unicodeLink);
-    
-    NSURL *apiURL =
-    [NSURL URLWithString:unicodeLink];
-    NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:apiURL cachePolicy:NSURLRequestReloadIgnoringCacheData
-                                                          timeoutInterval:60.0];
-    
-    [urlRequest setHTTPMethod:@"POST"];
-    NSLog(@"URL DESK----- %@",unicodeLink);
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
-    
-    
-    NSString *folderPath= [documentsDirectory stringByAppendingPathComponent:@"/Signature"];
-    NSMutableData *postbody = [NSMutableData data];
-    
-    
-    
-    UIImage *image=[self getImageFromFileName:[NSString stringWithFormat:@"%@.jpg", @"Signature_R"] folderPath:folderPath];
-    NSData *imaData = UIImageJPEGRepresentation(image,0.3);
-    NSString *boundary = @"---------------------------14737809831466499882746641449";
-    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
-    [urlRequest addValue:contentType forHTTPHeaderField: @"Content-Type"];
-    
-    [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"userfile\"; filename=\"%@.jpg\"\r\n",sigName2] dataUsingEncoding:NSUTF8StringEncoding]];
-    [postbody appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [postbody appendData:[NSData dataWithData:imaData]];
-    [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSLog(@"^^^^^^^^^^^^^%@",postbody);
-    
-    [urlRequest setHTTPBody:postbody];
-    uploadingSignature2=YES;
-    
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-    
-    _receivedData = [[NSMutableData alloc] init];
-    
-    [connection start];
-    
-    
-    NSLog(@"sent");
-    
-}
-
-
--(void)uploadSignature1
-{
-    
-    uploadingSignature1=YES;
-    
-    
-    
-    NSString *urlLink = [NSString stringWithFormat:@"%@/api/summary3/uploadimages/%@/%@", [PRIMECMAPPUtils getAPIEndpoint], appDelegate.username,sigName1];
-    
-    NSString *unicodeLink = [urlLink stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSLog(@"URL---%@",unicodeLink);
-    
-    NSURL *apiURL =
-    [NSURL URLWithString:unicodeLink];
-    NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:apiURL cachePolicy:NSURLRequestReloadIgnoringCacheData
-                                                          timeoutInterval:60.0];
-    
-    [urlRequest setHTTPMethod:@"POST"];
-    NSLog(@"URL DESK----- %@",unicodeLink);
-    //isSendingDecs=YES;
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
-    
-    
-    NSString *folderPath= [documentsDirectory stringByAppendingPathComponent:@"/Signature"];
-    NSMutableData *postbody = [NSMutableData data];
-    
-    
-    
-    UIImage *image=[self getImageFromFileName:[NSString stringWithFormat:@"%@.jpg", @"Signature"] folderPath:folderPath];
-    NSData *imaData = UIImageJPEGRepresentation(image,0.3);
-    // NSLog(@"********************* UPloadinggggg %i  %@",count1,[arrayImages objectAtIndex:count1]);
-    NSString *boundary = @"---------------------------14737809831466499882746641449";
-    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
-    [urlRequest addValue:contentType forHTTPHeaderField: @"Content-Type"];
-    
-    [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"userfile\"; filename=\"%@.jpg\"\r\n",sigName1] dataUsingEncoding:NSUTF8StringEncoding]];
-    [postbody appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [postbody appendData:[NSData dataWithData:imaData]];
-    [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSLog(@"^^^^^^^^^^^^^%@",postbody);
-    
-    [urlRequest setHTTPBody:postbody];
-    uploadingSignature1=YES;
-    
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-    
-    _receivedData = [[NSMutableData alloc] init];
-    
-    [connection start];
-    
-    
-    NSLog(@"sent");
-    
-}
 
 -(UIImage *)getSignatureFromFileName:(NSString *)fileName folderPath:(NSString *)folderPath
 {

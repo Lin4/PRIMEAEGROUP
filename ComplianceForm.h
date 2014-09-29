@@ -30,13 +30,12 @@
 @property (nonatomic, retain) NSString * images_3_desc;
 @property (nonatomic, retain) NSString * images_uploaded;
 @property (nonatomic, retain) NSString * printedName;
-@property (nonatomic, retain) NSString * project;
 @property (nonatomic, retain) NSString * project_id;
-@property (nonatomic, retain) NSString * projectDescription;
 @property (nonatomic, retain) NSString * signature;
 @property (nonatomic, retain) NSString * sketch_images;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * to;
 @property (nonatomic, retain) NSString * userID;
+@property (nonatomic, retain) NSNumber * syncStatus;
 
 @end

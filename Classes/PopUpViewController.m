@@ -24,6 +24,7 @@
     NSArray *pickerDataArray;
     NSIndexPath *index;
     TabAndSplitAppAppDelegate *appDelegate;
+    NSDictionary *sourceDictionary;
 }
 
 @end
@@ -56,9 +57,18 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
     return self;
 }
 
+- (id)initWithData:(NSDictionary *)sourceDictionaryParam
+{
+    self = [super init];
+    sourceDictionary = sourceDictionaryParam;
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    appDelegate=(TabAndSplitAppAppDelegate *)[[UIApplication sharedApplication] delegate];
     defaults=[NSUserDefaults standardUserDefaults];
     imgTag=0;
     self.imagePicker=[[UIImagePickerController alloc]init];
@@ -134,19 +144,18 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
     tableData = [NSArray arrayWithObjects:@"Project Id",@"Project Title",@"Project Name",@"Project Description",@"Street",@"City",@"State",@"Zip",@"Phone No",@"Date",@"Client Name",@"Project Manager",@"Inspector",nil];
     
     
+    if (sourceDictionary != nil && [sourceDictionary valueForKey:@"userInfo"] != nil){
+        //NSLog(@"Project Form - populating update for projId: %@", [[sourceDictionary valueForKey:@"userInfo"] valueForKey:@"projecct_id"]);
+        
+        
+    }
     
     
     button.enabled=NO;
     NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
     defaults=[NSUserDefaults standardUserDefaults];
-    
-    
-    
-    
-    
-    
-    }
+}
 
 
 #pragma mark -
@@ -232,7 +241,7 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
     {
         popupcell *cell =(popupcell *) [tblView cellForRowAtIndexPath:index];
         cell.lblpopupvalue.text=[df stringFromDate:datePicker.date];
-       [defaults setObject: [df stringFromDate:datePicker.date] forKey:@"Date"];
+        [defaults setObject: [df stringFromDate:datePicker.date] forKey:@"Date"];
         
         
     }
@@ -333,7 +342,7 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
 
 -(IBAction)saveImage:(id)sender
 {
-    NSString *imgName=[NSString stringWithFormat:@"CM_%i",count];
+    NSString *imgName=[NSString stringWithFormat:@"project_%@_%@_%d",appDelegate.projId, appDelegate.username, arc4random()%10000];
     
     if(txvDescription.text.length==0)
     {
@@ -366,7 +375,7 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
     txvDescription.text=@"";
     imgViewAdd.image=nil;
     [self.imageAddSubView removeFromSuperview];
-    }
+}
 
 -(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
@@ -407,7 +416,7 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
 
 -(IBAction)gotoImageLibrary:(id)sender
 {
-        if(arrayImages.count!=0)
+    if(arrayImages.count!=0)
     {
         CMShowImagesViewController *nextView= [[CMShowImagesViewController alloc]initWithNibName:@"CMShowImagesViewController" bundle:nil];
         //nextView.tag=[NSString stringWithFormat:@"%i",btn.tag];
@@ -498,7 +507,7 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-   
+    
     return 13;
 }
 
@@ -520,15 +529,18 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
     if (indexPath.section==0 && indexPath.row==0) {
         
         cell.lblpopupvalue.text=[defaults objectForKey:@"Project Id"];
-        //NSLog(@"projectid %@",[defaults objectForKey:@"Project Id"]);
+        
+        NSLog(@"projectid %@",[defaults objectForKey:@"Project Id"]);
         cell.lblHeading.text =[tableData objectAtIndex:indexPath.row];
+        //appDelegate.edit1=cell.lblpopupvalue.text;
+        // cell.lblpopupvalue.text=appDelegate.projId;
     }
     
     
     else if (indexPath.section==0 && indexPath.row==1) {
         
         cell.lblpopupvalue.text=[defaults objectForKey:@"Project Title"];
-        //NSLog(@"title %@",[defaults objectForKey:@"Project Title"]);
+        NSLog(@"title %@",[defaults objectForKey:@"Project Title"]);
         cell.lblHeading.text =[tableData objectAtIndex:indexPath.row];
     }
     else  if (indexPath.section==0 && indexPath.row==2) {
@@ -569,7 +581,7 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
     else if (indexPath.section==0 && indexPath.row==7) {
         
         cell.lblpopupvalue.text=[defaults objectForKey:@"Zip"];
-       //NSLog(@"zip %@",[defaults objectForKey:@"Zip"]);
+        //NSLog(@"zip %@",[defaults objectForKey:@"Zip"]);
         cell.lblHeading.text =[tableData objectAtIndex:indexPath.row];
     }
     
@@ -591,20 +603,20 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
     else if (indexPath.section==0 && indexPath.row==10) {
         
         cell.lblpopupvalue.text=[defaults objectForKey:@"Client Name"];
-       // NSLog(@"cname %@",[defaults objectForKey:@"Client Name"]);
+        // NSLog(@"cname %@",[defaults objectForKey:@"Client Name"]);
         cell.lblHeading.text =[tableData objectAtIndex:indexPath.row];
     }
     
     else if (indexPath.section==0 && indexPath.row==11) {
         
         cell.lblpopupvalue.text=[defaults objectForKey:@"Project Manager"];
-       // NSLog(@"manager %@",[defaults objectForKey:@"Project Manager"]);
+        // NSLog(@"manager %@",[defaults objectForKey:@"Project Manager"]);
         cell.lblHeading.text =[tableData objectAtIndex:indexPath.row];
     }
     else if (indexPath.section==0 && indexPath.row==12) {
         
         cell.lblpopupvalue.text=[defaults objectForKey:@"Inspector"];
-       // NSLog(@"inspector %@",[defaults objectForKey:@"Inspector"]);
+        // NSLog(@"inspector %@",[defaults objectForKey:@"Inspector"]);
         cell.lblHeading.text =[tableData objectAtIndex:indexPath.row];
     }
     cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
@@ -624,10 +636,10 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
         
         NSError *error;
         if(  !([[NSFileManager defaultManager] createDirectoryAtPath:folderPath withIntermediateDirectories:NO attributes:nil error:&error]))
-                        NSLog(@"[%@] ERROR: attempting to write create Images directory", [self class]);
+            NSLog(@"[%@] ERROR: attempting to write create Images directory", [self class]);
     }
     
-    NSData *imagData = UIImageJPEGRepresentation(image,0.75f);
+    NSData *imagData = UIImageJPEGRepresentation(image,1.0);
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *fullPath = [folderPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", imgNam]];
     [fileManager createFileAtPath:fullPath contents:imagData attributes:nil];
@@ -652,7 +664,6 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
     }
     else
     {
-        NSLog(@"selected----%@",cell.lblHeading.text);
         lblTitle.text=cell.lblHeading.text;
         [self.view addSubview:viewProjectName];
         txtViewProjectName.text=[defaults objectForKey:lblTitle.text];
@@ -693,7 +704,7 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
     cell.lblpopupvalue.text=[pickerDataArray objectAtIndex:[pickerView selectedRowInComponent:0]];
     if(pickerTag==1)
     {
-                [defaults setObject: [pickerDataArray objectAtIndex:[pickerView selectedRowInComponent:0]] forKey:@"Inspector"];
+        [defaults setObject: [pickerDataArray objectAtIndex:[pickerView selectedRowInComponent:0]] forKey:@"Inspector"];
         NSLog(@"Inspector---------%@",[defaults objectForKey:@"Inspector"]);
         
     }
@@ -717,7 +728,7 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
 // tell the picker the width of each row for a given component
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
     CGFloat componentWidth = 0.0;
-	componentWidth = 320.0;	
+	componentWidth = 320.0;
 	return componentWidth;
 }
 
@@ -874,7 +885,7 @@ imgViewAttach7,imgViewAttach8,imgViewAttach9,imgViewAttach10,imgViewAttach11,img
 -(IBAction)doneAttachmentsView:(id)sender
 {
     
-   
+    
     switch (imgTag) {
         case 0:
             imgViewAdd.image=imgViewAttach.image;

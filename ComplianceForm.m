@@ -29,14 +29,13 @@
 @dynamic images_3_desc;
 @dynamic images_uploaded;
 @dynamic printedName;
-@dynamic project;
 @dynamic project_id;
-@dynamic projectDescription;
 @dynamic signature;
 @dynamic sketch_images;
 @dynamic title;
 @dynamic to;
 @dynamic userID;
+@dynamic syncStatus;
 
 -(NSDictionary*) toDictionary
 {

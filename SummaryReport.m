@@ -1,7 +1,9 @@
 #import "SummaryReport.h"
 #import "PRIMECMAPPUtils.h"
 #import "PRIMECMController.h"
-
+#import "SummarySheet1.h"
+#import "SummarySheet2.h"
+#import "SummarySheet3.h"
 
 @interface SummaryReport ()
 {
@@ -64,7 +66,11 @@
                                 target:self
                                 action:@selector(fnEdit:)];
     
-    
+    UIBarButtonItem *Button3 = [[UIBarButtonItem alloc]
+                                initWithTitle:NSLocalizedString(@"Delete", @"")
+                                style:UIBarButtonItemStyleDone
+                                target:self
+                                action:@selector(fnDelete:)];
     
     UIBarButtonItem  *btnEmail = [[UIBarButtonItem alloc]
                                   initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(createPDF)];
@@ -75,8 +81,194 @@
     
     
     self.navigationItem.rightBarButtonItems=[NSArray arrayWithObjects:Button, btnEmail,btnPrint, nil];
-    self.navigationItem.leftBarButtonItem=Button2;
+    self.navigationItem.leftBarButtonItems=[NSArray arrayWithObjects:Button2, Button3, nil];
     [self populateSummerySheet];
+}
+
+
+-(IBAction)fnEdit:(id)sender
+{
+    NSMutableDictionary *summaryReportDTO = [[NSMutableDictionary alloc] init];
+    
+    //[summaryReportDTO setValue:txtContractor.text forKey:@"contractor"];
+    [summaryReportDTO setValue:txtContactorPerform.text forKey:@"conPeWork"];
+    [summaryReportDTO setValue:txtFederalAid.text forKey:@"federalAidNumber"];
+    [summaryReportDTO setValue:txvDesWork.text forKey:@"descr"];
+    [summaryReportDTO setValue:txvConsOrder.text forKey:@"constructionOrder"];
+    [summaryReportDTO setValue:txtClass1.text forKey:@"lAClass1"];
+    [summaryReportDTO setValue:txtClass2.text forKey:@"lAClass2"];
+    [summaryReportDTO setValue:txtClass3.text forKey:@"lAClass3"];
+    [summaryReportDTO setValue:txtClass4.text forKey:@"lAClass4"];
+    [summaryReportDTO setValue:txtClass5.text forKey:@"lAClass5"];
+    [summaryReportDTO setValue:txtNo1.text forKey:@"lANo1"];
+    [summaryReportDTO setValue:txtNo2.text forKey:@"lANo2"];
+    [summaryReportDTO setValue:txtNo3.text forKey:@"lANo3"];
+    [summaryReportDTO setValue:txtNo4.text forKey:@"lANo4"];
+    [summaryReportDTO setValue:txtNo5.text forKey:@"lANo5"];
+    [summaryReportDTO setValue:txtTotal1.text forKey:@"lATotalHours1"];
+    [summaryReportDTO setValue:txtTotal2.text forKey:@"lATotalHours2"];
+    [summaryReportDTO setValue:txtTotal3.text forKey:@"lATotalHours3"];
+    [summaryReportDTO setValue:txtTotal4.text forKey:@"lATotalHours4"];
+    [summaryReportDTO setValue:txtTotal5.text forKey:@"lATotalHours5"];
+    [summaryReportDTO setValue:txtRate1.text forKey:@"lARate1"];
+    [summaryReportDTO setValue:txtRate2.text forKey:@"lARate2"];
+    [summaryReportDTO setValue:txtRate3.text forKey:@"lARate3"];
+    [summaryReportDTO setValue:txtRate4.text forKey:@"lARate4"];
+    [summaryReportDTO setValue:txtRate5.text forKey:@"lARate5"];
+    [summaryReportDTO setValue:txtAmt1.text forKey:@"lAAmount1"];
+    [summaryReportDTO setValue:txtAmt2.text forKey:@"lAAmount2"];
+    [summaryReportDTO setValue:txtAmt3.text forKey:@"lAAmount3"];
+    [summaryReportDTO setValue:txtAmt4.text forKey:@"lAAmount4"];
+    [summaryReportDTO setValue:txtAmt5.text forKey:@"lAAmount5"];
+    [summaryReportDTO setValue:txtTotalLabor.text forKey:@"totalLabor"];
+    [summaryReportDTO setValue:txtHealth.text forKey:@"healWelAndPension"];
+    [summaryReportDTO setValue:txtInsTax.text forKey:@"insAndTaxesOnItem1"];
+    [summaryReportDTO setValue:txt20Items.text forKey:@"itemDescount20per"];
+    [summaryReportDTO setValue:txtTotalItems.text forKey:@"total"];
+    
+    
+    [summaryReportDTO setValue:txtDes1.text forKey:@"mEDescription1"];
+    [summaryReportDTO setValue:txtDes2.text forKey:@"mEDescription2"];
+    [summaryReportDTO setValue:txtDes3.text forKey:@"mEDescription3"];
+    [summaryReportDTO setValue:txtDes4.text forKey:@"mEDescription4"];
+    [summaryReportDTO setValue:txtDES5.text forKey:@"mEDescription5"];
+    [summaryReportDTO setValue:txtQuantity1.text forKey:@"mEQuantity1"];
+    [summaryReportDTO setValue:txtQuantity2.text forKey:@"mEQuantity2"];
+    [summaryReportDTO setValue:txtQuantity3.text forKey:@"mEQuantity3"];
+    [summaryReportDTO setValue:txtQuantity4.text forKey:@"mEQuantity4"];
+    [summaryReportDTO setValue:txtQuantity5.text forKey:@"mEQuantity5"];
+    [summaryReportDTO setValue:txtUnitPrice1.text forKey:@"mEUnitPrice1"];
+    [summaryReportDTO setValue:txtUnitPrice2.text forKey:@"mEUnitPrice2"];
+    [summaryReportDTO setValue:txtUnitPrice3.text forKey:@"mEUnitPrice3"];
+    [summaryReportDTO setValue:txtUnitPrice4.text forKey:@"mEUnitPrice4"];
+    [summaryReportDTO setValue:txtUnitPrice5.text forKey:@"mEUnitPrice5"];
+    [summaryReportDTO setValue:txtMAmt1.text forKey:@"mEAmount1"];
+    [summaryReportDTO setValue:txtMAmt2.text forKey:@"mEAmount2"];
+    [summaryReportDTO setValue:txtMAmt3.text forKey:@"mEAmount3"];
+    [summaryReportDTO setValue:txtMAmt4.text forKey:@"mEAmount4"];
+    [summaryReportDTO setValue:txtMAmt5.text forKey:@"mEAmount5"];
+    [summaryReportDTO setValue:txtTotalMeterial.text forKey:@"total1"];
+    [summaryReportDTO setValue:txtLessDiscount.text forKey:@"lessDiscount"];
+    [summaryReportDTO setValue:txtLessDisTotal.text forKey:@"total2"];
+    [summaryReportDTO setValue:txtAdditional.text forKey:@"additionalDiscount"];
+    [summaryReportDTO setValue:txtAddTotal.text forKey:@"total3"];
+//
+//    
+//    
+    [summaryReportDTO setValue:txtSize1.text forKey:@"eQSizeandClass1"];
+    [summaryReportDTO setValue:txtSize2.text forKey:@"eQSizeandClass2"];
+    [summaryReportDTO setValue:txtSize3.text forKey:@"eQSizeandClass3"];
+    [summaryReportDTO setValue:txtSize4.text forKey:@"eQSizeandClass4"];
+    [summaryReportDTO setValue:txtSize5.text forKey:@"eQSizeandClass5"];
+    [summaryReportDTO setValue:txtActive1.text forKey:@"eQIdleActive1"];
+    [summaryReportDTO setValue:txtActive2.text forKey:@"eQIdleActive2"];
+    [summaryReportDTO setValue:txtActive3.text forKey:@"eQIdleActive3"];
+    [summaryReportDTO setValue:txtActive4.text forKey:@"eQIdleActive4"];
+    [summaryReportDTO setValue:txtActive5.text forKey:@"eQIdleActive5"];
+    [summaryReportDTO setValue:txtENo1.text forKey:@"eQNo1"];
+    [summaryReportDTO setValue:txtENo2.text forKey:@"eQNo2"];
+    [summaryReportDTO setValue:txtENo3.text forKey:@"eQNo3"];
+    [summaryReportDTO setValue:txtENo4.text forKey:@"eQNo4"];
+    [summaryReportDTO setValue:txtENo5.text forKey:@"eQNo5"];
+    [summaryReportDTO setValue:txtETotal1.text forKey:@"eQTotalHours1"];
+    [summaryReportDTO setValue:txtETotal2.text forKey:@"eQTotalHours2"];
+    [summaryReportDTO setValue:txtEtotal3.text forKey:@"eQTotalHours3"];
+    [summaryReportDTO setValue:txtETotal4.text forKey:@"eQTotalHours4"];
+    [summaryReportDTO setValue:txtETotal5.text forKey:@"eQTotalHours5"];
+    
+    
+      [summaryReportDTO setValue:txtRate1.text forKey:@"eQRAte1"];
+      [summaryReportDTO setValue:txtRate2.text forKey:@"eQRAte2"];
+      [summaryReportDTO setValue:txtRate3.text forKey:@"eQRAte3"];
+      [summaryReportDTO setValue:txtRate4.text forKey:@"eQRAte4"];
+      [summaryReportDTO setValue:txtRate5.text forKey:@"eQRAte5"];
+    [summaryReportDTO setValue:txtEAmt1.text forKey:@"eQAmount1"];
+    [summaryReportDTO setValue:txtEAmt2.text forKey:@"eQAmount2"];
+    [summaryReportDTO setValue:txtEAmt3.text forKey:@"eQAmount3"];
+    [summaryReportDTO setValue:txtEAmt4.text forKey:@"eQAmount4"];
+    [summaryReportDTO setValue:txtEAmt5.text forKey:@"eQAmount5"];
+    [summaryReportDTO setValue:txtDailyTotal.text forKey:@"dailyTotal"];
+    [summaryReportDTO setValue:txtTotalDate.text forKey:@"total_to_date"];
+    
+    [summaryReportDTO setValue:SMNo forKey:@"sMSheetNo"];
+
+
+//
+//
+
+
+
+
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSummaryForm" object:nil userInfo:summaryReportDTO];
+}
+
+
+-(IBAction)fnDelete:(id)sender
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeDashboard" object:nil];
+    
+    SummarySheet1 *summarySheet1;
+    NSError *retrieveError;
+    
+    NSManagedObjectContext *managedContext = [PRIMECMAPPUtils getManagedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"SummarySheet1" inManagedObjectContext:managedContext];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(sMSheetNo = %@)", SMNo];
+    [fetchRequest setPredicate:predicate];
+    
+    NSArray *fetchedObjects = [managedContext executeFetchRequest:fetchRequest error:&retrieveError];
+    
+    if (fetchedObjects && [fetchedObjects count] > 0) {
+        summarySheet1 = [fetchedObjects objectAtIndex:0];
+        [managedContext deleteObject:summarySheet1];
+        if (![managedContext save:&retrieveError]) {
+            NSLog(@"Whoops, couldn't delete: %@", [retrieveError localizedDescription]);
+        } else {
+            NSLog(@"Deleted: %@", SMNo);
+        }
+    }
+    
+    SummarySheet2 *summarySheet2;
+    entity = [NSEntityDescription entityForName:@"SummarySheet2" inManagedObjectContext:managedContext];
+    [fetchRequest setEntity:entity];
+    predicate = [NSPredicate predicateWithFormat:@"(sMSSheetNo = %@)", SMNo];
+    [fetchRequest setPredicate:predicate];
+    
+    fetchedObjects = [managedContext executeFetchRequest:fetchRequest error:&retrieveError];
+    
+    if (fetchedObjects && [fetchedObjects count] > 0) {
+        summarySheet2 = [fetchedObjects objectAtIndex:0];
+        [managedContext deleteObject:summarySheet2];
+        if (![managedContext save:&retrieveError]) {
+            NSLog(@"Whoops, couldn't delete: %@", [retrieveError localizedDescription]);
+        } else {
+            NSLog(@"Deleted: %@", SMNo);
+        }
+    }
+    
+    
+    SummarySheet3 *summarySheet3;
+    entity = [NSEntityDescription entityForName:@"SummarySheet3" inManagedObjectContext:managedContext];
+    [fetchRequest setEntity:entity];
+    predicate = [NSPredicate predicateWithFormat:@"(sMSheetNo = %@)", SMNo];
+    [fetchRequest setPredicate:predicate];
+    
+    fetchedObjects = [managedContext executeFetchRequest:fetchRequest error:&retrieveError];
+    
+    if (fetchedObjects && [fetchedObjects count] > 0) {
+        summarySheet3 = [fetchedObjects objectAtIndex:0];
+        [managedContext deleteObject:summarySheet3];
+        if (![managedContext save:&retrieveError]) {
+            NSLog(@"Whoops, couldn't delete: %@", [retrieveError localizedDescription]);
+        } else {
+            NSLog(@"Deleted: %@", SMNo);
+        }
+    }
+    
+    
 }
 
 
@@ -289,57 +481,42 @@
         txtENo3.text=[summaryReportObject valueForKey:@"eQNo3"];
         txtENo4.text=[summaryReportObject valueForKey:@"eQNo4"];
         txtENo5.text=[summaryReportObject valueForKey:@"eQNo5"];
-
+        
         txtETotal1.text=[summaryReportObject valueForKey:@"eQTotalHours1"];
         txtETotal2.text=[summaryReportObject valueForKey:@"eQTotalHours2"];
         txtEtotal3.text=[summaryReportObject valueForKey:@"eQTotalHours3"];
         txtETotal4.text=[summaryReportObject valueForKey:@"eQTotalHours4"];
         txtETotal5.text=[summaryReportObject valueForKey:@"eQTotalHours5"];
-//
+        
         txtERate1.text=[summaryReportObject valueForKey:@"eQRAte1"];
         txtERate2.text=[summaryReportObject valueForKey:@"eQRAte2"];
         txtERate3.text=[summaryReportObject valueForKey:@"eQRAte3"];
         txtERate4.text=[summaryReportObject valueForKey:@"eQRAte4"];
         txtERate5.text=[summaryReportObject valueForKey:@"eQRAte5"];
-//
+        
         txtEAmt1.text=[summaryReportObject valueForKey:@"eQAmount1"];
         txtEAmt2.text=[summaryReportObject valueForKey:@"eQAmount2"];
         txtEAmt3.text=[summaryReportObject valueForKey:@"eQAmount3"];
         txtEAmt4.text=[summaryReportObject valueForKey:@"eQAmount4"];
         txtEAmt5.text=[summaryReportObject valueForKey:@"eQAmount5"];
-
+        
         txtInspector.text=[summaryReportObject valueForKey:@"inspector"];
         
-//        txtEDate.text=[responseObject valueForKey:@"Date1"];
         txtContractorRepresentative.text=[summaryReportObject valueForKey:@"contractorRepresentative"];
         txtConReDate.text=[NSDateFormatter localizedStringFromDate:[summaryReportObject valueForKey:@"date2"]
                                                          dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
-//        
+        
         txtDailyTotal.text=[summaryReportObject valueForKey:@"dailyTotal"];
         txtTotalDate.text=[summaryReportObject valueForKey:@"total_to_date"];
         
         NSString * signName1 = [summaryReportObject valueForKey:@"signature1"];
         NSString * signName2 = [summaryReportObject valueForKey:@"signature2"];
-
-
+        
+        
         imgSignature.image=[PRIMECMController getTheImage:signName1];
         imgSignature2.image=[PRIMECMController getTheImage:signName2];
-
         
-//        
-//        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://data.privytext.us/summery/%@",
-//                                           [NSString stringWithFormat:@"%@.jpg", [summaryReportObject valueForKey:@"signature1"]]]];
-//        NSLog(@"url----%@",url);
-//        NSData *imageData1 = [NSData dataWithContentsOfURL:url];
-//        UIImage *image = [[UIImage alloc] initWithData:imageData1];
-//        imgSignature.image=image;
-//        
-//        NSURL *url2 = [NSURL URLWithString:[NSString stringWithFormat:@"http://data.privytext.us/summery/%@",
-//                                            [NSString stringWithFormat:@"%@.jpg", [summaryReportObject valueForKey:@"signature2"]]]];
-//        NSLog(@"url----%@",url2);
-//        NSData *imageData2 = [NSData dataWithContentsOfURL:url2];
-//        UIImage *image1 = [[UIImage alloc] initWithData:imageData2];
-//        imgSignature2.image=image1;
+        
     }
     
     [hud setHidden:YES];
@@ -358,7 +535,6 @@
     NSString *fileName=[NSString stringWithFormat:@"%@.pdf",@"Report"];
     NSString *filePath = [directroyPath stringByAppendingPathComponent:fileName];
     
-    // check for the "PDF" directory
     NSError *error;
     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
         

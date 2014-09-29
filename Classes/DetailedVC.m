@@ -136,98 +136,132 @@
         
         [loginAlert show];
     }else{
-        if ([self connected]) {
+        /*
+         if ([self connected]) {
+         
+         NSLog(@"Login in online mode");
+         
+         NSString *strURL = [NSString stringWithFormat:@"%@/api/user/login/check/%@/%@", [PRIMECMAPPUtils getAPIEndpoint] , _usernameField.text, _passwordField.text];
+         NSURL *apiURL =
+         [NSURL URLWithString:strURL];
+         NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:apiURL];
+         [urlRequest setHTTPMethod:@"GET"];
+         NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
+         _receivedData = [[NSMutableData alloc] init];
+         [connection start];
+         HUD = [[MBProgressHUD alloc] initWithView:self.view];
+         [self.navigationController.view addSubview:HUD];
+         HUD.labelText=@"";
+         HUD.dimBackground = YES;
+         HUD.delegate = self;
+         [HUD show:YES];
+         
+         } else if(![self connected]){
+         
+         NSLog(@"Login in offline mode");
+         
+         NSManagedObjectContext *context = [PRIMECMAPPUtils getManagedObjectContext];
+         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+         NSEntityDescription *entity = [NSEntityDescription
+         entityForName:@"Users" inManagedObjectContext:context];
+         [fetchRequest setEntity:entity];
+         NSError *error;
+         fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+         NSFetchRequest *request = [[NSFetchRequest alloc] init];
+         [request setEntity:entity];
+         
+         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(username == %@ && password == %@)", [_TUserName text], [_TPassword text]];
+         [request setPredicate:predicate];
+         NSArray *result = [context executeFetchRequest:request error:&error];
+         
+         if ((result != nil) && ([result count] > 0) && (error == nil)){
+         NSManagedObject *obj = [result objectAtIndex:0];
+         appDelegate.userTypeOffline= [obj valueForKey:@"user_type"];
+         selectedObject = obj;
+         appDelegate.Tag=4;
+         
+         NSString *fname=[obj valueForKey:@"firstname"];
+         NSString *lname=[obj valueForKey:@"lastname"];
+         NSString *combined = [NSString stringWithFormat:@"%@ %@", fname, lname];
+         
+         appDelegate.userId=[obj valueForKey:@"id_no"];
+         appDelegate.username=[obj valueForKey:@"username"];
+         appDelegate.projPrintedName=combined;
+         
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"changeView" object:nil];
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"changeTableView" object:nil];
+         
+         NSLog(@"--------Login Success Offline---------");
+         }
+         else{
+         NSLog(@"-------Login Error Offline------------");
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login Failed"
+         message:@"Incorrect username or password.Please try again"
+         delegate:self
+         cancelButtonTitle:@"Ok"
+         otherButtonTitles:nil];
+         alert.delegate=self;
+         [alert show];
+         }
+         }
+         */
+        
+        
+        NSLog(@"Login in offline mode");
+        
+        NSManagedObjectContext *context = [PRIMECMAPPUtils getManagedObjectContext];
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription
+                                       entityForName:@"Users" inManagedObjectContext:context];
+        [fetchRequest setEntity:entity];
+        NSError *error;
+        fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        [request setEntity:entity];
+        
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(username == %@ && password == %@)", [_TUserName text], [_TPassword text]];
+        [request setPredicate:predicate];
+        NSArray *result = [context executeFetchRequest:request error:&error];
+        
+        if ((result != nil) && ([result count] > 0) && (error == nil)){
+            NSManagedObject *obj = [result objectAtIndex:0];
+            appDelegate.userTypeOffline= [obj valueForKey:@"user_type"];
+            selectedObject = obj;
+            appDelegate.Tag=4;
             
-            NSLog(@"Login in online mode");
+            NSString *fname=[obj valueForKey:@"firstname"];
+            NSString *lname=[obj valueForKey:@"lastname"];
+            NSString *combined = [NSString stringWithFormat:@"%@ %@", fname, lname];
             
-            NSString *strURL = [NSString stringWithFormat:@"%@/api/user/login/check/%@/%@", [PRIMECMAPPUtils getAPIEndpoint] , _usernameField.text, _passwordField.text];
-            NSURL *apiURL =
-            [NSURL URLWithString:strURL];
-            NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:apiURL];
-            [urlRequest setHTTPMethod:@"GET"];
-            NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
-            _receivedData = [[NSMutableData alloc] init];
-            [connection start];
-            HUD = [[MBProgressHUD alloc] initWithView:self.view];
-            [self.navigationController.view addSubview:HUD];
-            HUD.labelText=@"";
-            HUD.dimBackground = YES;
-            HUD.delegate = self;
-            [HUD show:YES];
+            appDelegate.userId=[obj valueForKey:@"id_no"];
+            appDelegate.username=[obj valueForKey:@"username"];
+            appDelegate.projPrintedName=combined;
+            appDelegate.userType=[obj valueForKey:@"user_type"];
             
-        } else if(![self connected]){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeView" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"changeTableView" object:nil];
             
-            NSLog(@"Login in offline mode");
-            
-            NSManagedObjectContext *context = [PRIMECMAPPUtils getManagedObjectContext];
-            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-            NSEntityDescription *entity = [NSEntityDescription
-                                           entityForName:@"Users" inManagedObjectContext:context];
-            [fetchRequest setEntity:entity];
-            NSError *error;
-            fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-            NSFetchRequest *request = [[NSFetchRequest alloc] init];
-            [request setEntity:entity];
-            
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(username == %@ && password == %@)", [_TUserName text], [_TPassword text]];
-            [request setPredicate:predicate];
-            NSArray *result = [context executeFetchRequest:request error:&error];
-            
-            if ((result != nil) && ([result count] > 0) && (error == nil)){
-                NSManagedObject *obj = [result objectAtIndex:0];
-                appDelegate.userTypeOffline= [obj valueForKey:@"user_type"];
-                selectedObject = obj;
-                appDelegate.Tag=4;
-                
-                NSString *fname=[obj valueForKey:@"firstname"];
-                NSString *lname=[obj valueForKey:@"lastname"];
-                NSString *combined = [NSString stringWithFormat:@"%@ %@", fname, lname];
-                
-                appDelegate.userId=[obj valueForKey:@"id_no"];
-                appDelegate.username=[obj valueForKey:@"username"];
-                appDelegate.projPrintedName=combined;
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"changeView" object:nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"changeTableView" object:nil];
-                
-                NSLog(@"--------Login Success Offline---------");
-            }
-            else{
-                NSLog(@"-------Login Error Offline------------");
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login Failed"
-                                                                message:@"Incorrect username or password.Please try again"
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Ok"
-                                                      otherButtonTitles:nil];
-                alert.delegate=self;
-                [alert show];
-            }
+            NSLog(@"--------Login Success Offline---------");
         }
+        else{
+            NSLog(@"-------Login Error Offline------------");
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Login Failed"
+                                                            message:@"Incorrect username or password.Please try again"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil];
+            alert.delegate=self;
+            [alert show];
+        }
+        
+        
+        
     }
 }
 
 
 -(void)displayManagedObject:(NSManagedObject *)obj {
     appDelegate.userTypeOffline = [obj valueForKey:@"user_type"];
-}
-
-
-- (void) saveData
-{
-    /*
-    NSManagedObjectContext *context = [PRIMECMAPPUtils getManagedObjectContext];
-    NSManagedObject *newContact;
-    newContact = [NSEntityDescription insertNewObjectForEntityForName:@"Users" inManagedObjectContext:context];
-    [newContact setValue:@"Lin" forKey:@"username"];
-    [newContact setValue:@"12345" forKey:@"password"];
-    [newContact setValue:@"Lingeshwaran" forKey:@"firstname"];
-    [newContact setValue:@"Kandasami" forKey:@"lastname"];
-    [newContact setValue:@"id_no" forKey:@"000"];
-    
-    NSError *error;
-    [context save:&error];
-    NSLog(@"-----------user saved--------");
-     */
 }
 
 
@@ -259,7 +293,6 @@
                                                                 error:&parseError];
     
     
-    //NSLog(@"response obj------%@",responseObject);
     NSString *loginStatus = [[responseObject  valueForKey:@"message"]valueForKey:@"status"];
     NSString *fname=[responseObject valueForKey:@"firstname"];
     NSString *lname=[responseObject valueForKey:@"lastname"];
@@ -294,15 +327,12 @@
 
 
 - (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    // Release any cached data, images, etc. that aren't in use.
 }
 
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    
 }
 @end

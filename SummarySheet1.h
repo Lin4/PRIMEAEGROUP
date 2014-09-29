@@ -20,7 +20,6 @@
 @property (nonatomic, retain) NSString * descr;
 @property (nonatomic, retain) NSString * federalAidNumber;
 @property (nonatomic, retain) NSString * healWelAndPension;
-@property (nonatomic, retain) NSNumber * id;
 @property (nonatomic, retain) NSString * insAndTaxesOnItem1;
 @property (nonatomic, retain) NSString * itemDescount20per;
 @property (nonatomic, retain) NSString * lAAmount1;
@@ -50,7 +49,6 @@
 @property (nonatomic, retain) NSString * lATotalHours5;
 @property (nonatomic, retain) NSString * pOBox;
 @property (nonatomic, retain) NSString * project_id;
-@property (nonatomic, retain) NSString * projectNo;
 @property (nonatomic, retain) NSString * reportNo;
 @property (nonatomic, retain) NSString * sMSheetNo;
 @property (nonatomic, retain) NSString * sSHeader;
@@ -60,5 +58,6 @@
 @property (nonatomic, retain) NSString * totalLabor;
 @property (nonatomic, retain) NSString * zip;
 @property (nonatomic, retain) NSString * printedName;
+@property (nonatomic, retain) NSNumber * syncStatus;
 
 @end

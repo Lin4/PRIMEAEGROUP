@@ -12,6 +12,10 @@
 
 @interface SummaryReportViewController : UIViewController<UITableViewDataSource,UITableViewDelegate, MBProgressHUDDelegate>
 
+
+
+
+
 @property(nonatomic,strong)IBOutlet UIScrollView *scrollView;
 @property(nonatomic,strong)NSMutableArray *arrayImages;
 
@@ -58,12 +62,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *total;
 @property (weak, nonatomic) IBOutlet UITextField *totalLabor;
 @property (weak, nonatomic) IBOutlet UITextField *zip;
+@property (weak, nonatomic) IBOutlet UITextField *id1;
 
-
-@property (weak, nonatomic) IBOutlet UITextField *printedName;
-@property (weak, nonatomic) IBOutlet UITextField *project_id;
-@property (weak, nonatomic) IBOutlet UITextField *reportNo;
-@property (weak, nonatomic) IBOutlet UITextField *sMSheetNo;
-@property (weak, nonatomic) IBOutlet UITextField *id;
+- (id)initWithData:(NSDictionary *)sourceDictionary;
 
 @end

@@ -25,7 +25,7 @@
 @synthesize projContractNo,projDescription,projName,projPrintedName,projTitle;
 @synthesize userId;
 @synthesize address,city,state,tel,pm,zip;
-@synthesize saveVal;
+
 @synthesize str1, str2, reImp;
 @synthesize managedObjectContext = __managedObjectContext;
 @synthesize managedObjectModel = __managedObjectModel;
@@ -34,7 +34,8 @@
 @synthesize imageArray;
 @synthesize address_client;
 @synthesize client;
-@synthesize coloumn1,coloumn2,coloumn3,coloumn4,iddd;
+
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
    	//create split view controller
@@ -59,23 +60,16 @@
     
     // Create first object:
     userData = [[NSManagedObject alloc]initWithEntity:entitydesc insertIntoManagedObjectContext:context];
-    [userData setValue:@"Lin" forKey:@"username"];
+    [userData setValue:@"system" forKey:@"username"];
     [userData setValue:@"12345" forKey:@"password"];
-    [userData setValue:@"I" forKey:@"user_type"];
-    [context save:&error];
+    [userData setValue:@"S" forKey:@"user_type"];
     
-    // Create second object:
-    userData = [[NSManagedObject alloc]initWithEntity:entitydesc insertIntoManagedObjectContext:context];
-    [userData setValue:@"Roy" forKey:@"username"];
-    [userData setValue:@"12345" forKey:@"password"];
-    [userData setValue:@"I" forKey:@"user_type"];
+    [userData setValue:@"system" forKey:@"firstname"];
+    [userData setValue:@"user" forKey:@"lastname"];
+    [userData setValue:@"000" forKey:@"id_no"];   
     
     [context save:&error];
-    userData = [[NSManagedObject alloc]initWithEntity:entitydesc insertIntoManagedObjectContext:context];
-    [userData setValue:@"Art" forKey:@"username"];
-    [userData setValue:@"12345" forKey:@"password"];
-    [userData setValue:@"R" forKey:@"user_type"];
-    [context save:&error];
+    
     
     return YES;
 }
@@ -99,8 +93,6 @@
     return __managedObjectContext;
 }
 
-// Returns the managed object model for the application.
-// If the model doesn't already exist, it is created from the application's model.
 - (NSManagedObjectModel *)managedObjectModel
 {
     if (__managedObjectModel != nil) {
@@ -132,7 +124,6 @@
 
 #pragma mark - Application's Documents directory
 
-// Returns the URL to the application's Documents directory.
 - (NSURL *)applicationDocumentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];

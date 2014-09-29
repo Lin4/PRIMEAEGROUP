@@ -10,17 +10,16 @@
 #import <QuartzCore/QuartzCore.h>
 #import "MBProgressHUD.h"
 #import <MessageUI/MessageUI.h>
+#import "PRIMECMAPPUtils.h"
 #import <QuartzCore/QuartzCore.h>
+#import "PRIMECMController.h"
 
 
-@interface Quantity_S_Report : UIViewController<UIPrintInteractionControllerDelegate,MFMailComposeViewControllerDelegate,MBProgressHUDDelegate>{
-    
-    
+@interface Quantity_S_Report : UIViewController<UIPrintInteractionControllerDelegate,MFMailComposeViewControllerDelegate,MBProgressHUDDelegate>{    
     UIPrintInteractionController *printController;
-    
-    
-    
 }
+
+@property (strong, nonatomic) NSDictionary *selectedDict;
 @property(nonatomic,retain)NSString *QNo;
 @property (weak, nonatomic) IBOutlet UITextField *project;
 @property (weak, nonatomic) IBOutlet UITextField *itemNo;
@@ -29,11 +28,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *price;
 @property (weak, nonatomic) IBOutlet UITableView *quantityTable;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-
 @property (weak, nonatomic) IBOutlet UITextView *item;
-
 @property (weak, nonatomic) IBOutlet UITableView *tblView;
+@property (weak, nonatomic) IBOutlet UITextField *date;
 
-
+- (id)initWithData:(NSDictionary *)sourceDictionary;
 
 @end

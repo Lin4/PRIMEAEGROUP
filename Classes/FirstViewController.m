@@ -59,7 +59,6 @@
 @synthesize mapId;
 @synthesize detailedNavigationController;
 @synthesize imageSubView;
-@synthesize viewTapHere;
 @synthesize hud;
 
 - (id)init {
@@ -74,7 +73,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -122,7 +120,6 @@
     self.navigationItem.rightBarButtonItem = Button;
     self.navigationItem.leftBarButtonItem = btnMapType;
     
-    // Coordinates for part of downtown San Francisco - around Moscone West, no less.
     MKCoordinateRegion startupRegion;
 	startupRegion.center = CLLocationCoordinate2DMake(41.650639, -72.665895);
 	startupRegion.span = MKCoordinateSpanMake(0.003515, 0.007129);
@@ -177,7 +174,7 @@
     popoverView.backgroundColor=[UIColor whiteColor];
     popoverContent.view=popoverView;
     popoverContent.preferredContentSize=CGSizeMake(250, 250);
-    popoverContent.view=tblView; //Adding tableView to popover
+    popoverContent.view=tblView;
     tblView.delegate=self;
     tblView.dataSource=self;
     popMenu=[[UIPopoverController alloc]initWithContentViewController:popoverContent];
@@ -233,7 +230,7 @@
     [hud show:YES];
     
     NSNumber *latitudeNumber = [NSNumber numberWithDouble:latitude];
-    NSNumber *longitudeNumber = [NSNumber numberWithDouble:longitude];   
+    NSNumber *longitudeNumber = [NSNumber numberWithDouble:longitude];
     
     BOOL saveStatus = [PRIMECMController
                        saveProject:appDelegate.username
@@ -256,16 +253,19 @@
     [hud setHidden:YES];
     
     if (saveStatus){
-        UIAlertView *exportAlert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Successfully saved project." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView *exportAlert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Successfully saved project."
+                                                             delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        exportAlert.tag = 10;
         [exportAlert show];
     }else{
-        UIAlertView *exportAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to save project." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView *exportAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to save project."
+                                                             delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        exportAlert.tag = 10;
         [exportAlert show];
     }
-
+    
     self.navigationItem.rightBarButtonItem = Button;
     NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
-    //[[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
 }
 
 
@@ -351,7 +351,6 @@
     else
     {
         [bottomView removeFromSuperview];
-        // bottomView.hidden=YES;
         isDisplayBottomBar=NO;
         bottomView.frame = CGRectMake(20.0, 582.0,600.0, 50.0);//place where to start animating
         [UIView animateWithDuration:0.1
@@ -371,12 +370,8 @@
 }
 
 
-
-// once the mapview appears, below method used for close the map
-
 -(void)selectionDone
 {
-    // [popoverController dismissPopoverAnimated:YES];
     [popMenu dismissPopoverAnimated:YES];
     [popMap dismissPopoverAnimated:YES];
 }
@@ -397,7 +392,6 @@
         
         latitude=locCoord.latitude;
         longitude=locCoord.longitude;
-        // MKPointAnnotation *newAnnotation = [[MKPointAnnotation alloc] init];
         
         //brin
         GIKAnnotation *newAnnotation = [[GIKAnnotation alloc] init];
@@ -501,7 +495,7 @@
             [self displayPopupView];
             appDelegate.Tag=5;
         }
-        if(indexPath.section==0 && indexPath.row==1 && ([appDelegate.userType isEqualToString:@"I"] || [appDelegate.userTypeOffline isEqualToString:@"I"]))
+        if(indexPath.section==0 && indexPath.row==1 && ([appDelegate.userType isEqualToString:@"S"] || [appDelegate.userType isEqualToString:@"I"] || [appDelegate.userTypeOffline isEqualToString:@"I"]))
             
         {
             
@@ -535,7 +529,7 @@
             self.navigationItem.rightBarButtonItem.enabled = NO;
         }
         
-        if (indexPath.section == 0 && indexPath.row == 2 && ([appDelegate.userType isEqualToString:@"I"] || [appDelegate.userTypeOffline isEqualToString:@"I"]))
+        if (indexPath.section == 0 && indexPath.row == 2 && ([appDelegate.userType isEqualToString:@"S"] || [appDelegate.userType isEqualToString:@"I"] || [appDelegate.userTypeOffline isEqualToString:@"I"]))
         {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.primetgrp.com/technical-support/"]];
         }
@@ -546,7 +540,7 @@
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.primetgrp.com/technical-support/"]];
         }
         
-        if (indexPath.section == 0 && indexPath.row == 3 && ([appDelegate.userType isEqualToString:@"I"] || [appDelegate.userTypeOffline isEqualToString:@"I"]))
+        if (indexPath.section == 0 && indexPath.row == 3 && ([appDelegate.userType isEqualToString:@"S"] || [appDelegate.userType isEqualToString:@"I"] || [appDelegate.userTypeOffline isEqualToString:@"I"]))
         {
             [self syncAll];
         }
@@ -557,20 +551,19 @@
             [self syncAll];
         }
     }
-    //[popoverController dismissPopoverAnimated:YES];
     [popMenu dismissPopoverAnimated:YES];
     [popMap dismissPopoverAnimated:YES];
 }
 
--(void) syncAll
-{
-    NSLog(@"syncing all!");
+-(void) syncImages {
     
+    NSLog(@"syncing all images!");
     [self showInfoAlert];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
-        int syncStatus = [PRIMECMController synchronizeWithServer];
+        int syncStatus = [PRIMECMController synchronizeImagesWithServer];
+        NSLog(@"syncStatus = %d", syncStatus);
         
         dispatch_async( dispatch_get_main_queue(), ^{
             
@@ -579,7 +572,8 @@
             
             if(syncStatus == 0)
             {
-                UIAlertView *exportAlert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Successfully synchronized with the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *exportAlert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Successfully synchronized images with the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                exportAlert.tag = 2;
                 [exportAlert show];
             }
             else
@@ -598,9 +592,89 @@
                     errMsg=@"Failed to push offline data to the server.";
                 }
                 
-                errMsg=[NSString stringWithFormat:@"Failed to synchronize. Please try again. Failed reason: %@", errMsg];
+                errMsg=[NSString stringWithFormat:@"Failed to synchronize images. Please try again. Failed reason: %@", errMsg];
                 UIAlertView *exportAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:errMsg delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                exportAlert.tag = -1;
                 [exportAlert show];
+                
+            }
+        });
+        
+    });
+
+    
+}
+
+// yes button callback
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    if (alertView.tag == 1){
+        if (buttonIndex == 0) {
+            // do code for yes click
+            [self syncImages];
+        } else {
+            // otherwise
+            
+        }
+    } else if (alertView.tag == 0){
+        if (buttonIndex == 0){
+            // OK
+            
+            UIAlertView *alert = [[UIAlertView alloc]
+                                  initWithTitle:@"Sync"
+                                  message:@"Do you want to sync images? This may take some time depending on your network connection."
+                                  delegate:self  // set nil if you don't want the yes button callback
+                                  cancelButtonTitle:@"Yes"
+                                  otherButtonTitles:@"No", nil];
+            alert.tag = 1;
+            [alert show];
+            
+        } else {
+            
+        }
+    }
+    
+}
+
+
+-(void) syncAll
+{
+    NSLog(@"syncing all data!");
+    [self showInfoAlert];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        
+        int syncStatus = [PRIMECMController synchronizeDataWithServer];
+        
+        dispatch_async( dispatch_get_main_queue(), ^{
+            
+            [self reloadInputViews];
+            [self hudWasHidden];
+            
+            if(syncStatus == 0)
+            {
+                UIAlertView *exportAlert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Successfully synchronized data with the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                exportAlert.tag = 0;
+                [exportAlert show];
+            }
+            else
+            {
+                NSString *errMsg;
+                if (syncStatus == 1){
+                    errMsg=@"No Internet connection";
+                }
+                else if (syncStatus == 2){
+                    errMsg=@"Failed to push offline data to the server.";
+                }
+                else if (syncStatus == 3){
+                    errMsg=@"Failed to pull data from the server.";
+                }
+                
+                errMsg=[NSString stringWithFormat:@"Synchronization failed. Please try again. Failed reason: %@", errMsg];
+                UIAlertView *exportAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:errMsg delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                exportAlert.tag = -1;
+                [exportAlert show];
+                
             }
         });
         
@@ -625,10 +699,6 @@
 }
 
 
--(void)doneAction
-{
-    
-}
 
 
 -(void)createAddImageCloseBtn
@@ -667,7 +737,6 @@
 		theHotel.state = [hotel valueForKey:@"state"];
 		theHotel.zip = [hotel valueForKey:@"zip"];
 		theHotel.phone = [hotel valueForKey:@"phone"];
-		//theHotel.url = [hotel objectForKey:@"url"];
 		theHotel.latitude = [[hotel valueForKey:@"p_latitude"] doubleValue];
 		theHotel.longitude = [[hotel valueForKey:@"p_longitude"] doubleValue];
 		HotelAnnotation *annotation = [[HotelAnnotation alloc] initWithLatitude:theHotel.latitude longitude:theHotel.longitude];
@@ -694,19 +763,16 @@
     mapId=[dict valueForKey:@"mapId"];
     HotelAnnotation *annotation=[hotelAnnotations objectAtIndex:[mapId intValue]];
     
-   
+    
     
     CLLocationCoordinate2D zoomLocation;
     zoomLocation.latitude =annotation.coordinate.latitude;
     zoomLocation.longitude= annotation.coordinate.longitude;
     
-     NSLog(@"HotelAnnotation = %f , %f", zoomLocation.latitude, zoomLocation.longitude );
+    NSLog(@"HotelAnnotation = %f , %f", zoomLocation.latitude, zoomLocation.longitude );
     
-    // 2
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 0.0*METERS_PER_MILE, 0.0*METERS_PER_MILE);
-    // 3
     [mapView setRegion:viewRegion animated:YES];
-    
     [mapView selectAnnotation:annotation animated:YES];
 }
 
@@ -725,7 +791,6 @@
 
 - (NSArray *)hotels {
     hotels = [appDelegate.projectsArray mutableCopy];
-    //NSLog(@"Hotels----%@",hotels);
 	return hotels;
 }
 
