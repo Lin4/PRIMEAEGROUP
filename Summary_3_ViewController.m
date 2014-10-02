@@ -13,8 +13,6 @@
     UIDatePicker *datePicker;
     UIPickerView *pickerView;
     NSMutableArray *pickerDataArray;
-    
-    
     NSMutableArray *hotelAnnotations;
     UITableView *tblView;
     NSArray *tableData;
@@ -24,43 +22,25 @@
     NSString *isSignature;
     UIButton *btnCloseSignView;
     NSInteger * STag;
-    
-    
     TabAndSplitAppAppDelegate *appDelegate;
-    
-    
     NSString *imgName;
-    
     NSInteger count;
-    
-    
     MBProgressHUD *HUD;
-    
     NSMutableData *_receivedData;
     NSURLResponse *_receivedResponse;
     NSError *_connectionError;
     NSArray *resPonse;
-    
     BOOL *uploading;
     BOOL *uploadingsketch;
     int count1;
     int count2;
     NSString *comNoticeNo;
-    
-    
     BOOL isUploadingSignature;
-    
     BOOL uploadingSignature2;
     BOOL uploadingSignature1;
-    
     NSString *sigName1;
     NSString *sigName2;
-    
-    
     NSDictionary *sourceDictionary;
-    
-    
-    
 }
 
 @end
@@ -804,6 +784,45 @@
     return retStr;
 }
 
-
+-(void)viewDidUnload
+{
+    self.smSheetNumber=nil;
+    self.arrayImages=nil;
+    self.signature1=nil;
+    self.signature2=nil;
+    self.scrollView=nil;
+    self->popoverController=nil;
+    self->datePicker=nil;
+    self->pickerView=nil;
+    self->pickerDataArray=nil;
+    self->hotelAnnotations=nil;
+    self->tblView=nil;
+    self->tableData=nil;
+    self->popoverContent=nil;
+    self->pickerTag=nil;
+    self->signatureViewController=nil;
+    self->isSignature=nil;
+    self->btnCloseSignView=nil;
+    self->STag=nil;
+    self->appDelegate=nil;
+    self->imgName=nil;
+    self->count=nil;
+    self->HUD=nil;
+    self->_receivedData=nil;
+    self->_receivedResponse=nil;
+    self->_connectionError=nil;
+    self->resPonse=nil;
+    self->uploading=nil;
+    self->uploadingsketch=nil;
+    self->count1=nil;
+    self->count2=nil;
+    self->comNoticeNo=nil;
+    self->isUploadingSignature=nil;
+    self->uploadingSignature2=nil;
+    self->uploadingSignature1=nil;
+    self->sigName1=nil;
+    self->sigName2=nil;
+    self->sourceDictionary=nil;
+}
 
 @end

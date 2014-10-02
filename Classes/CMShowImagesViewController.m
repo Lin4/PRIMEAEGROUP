@@ -161,4 +161,18 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)viewDidUnload
+{
+    self.scrollView=nil;
+    self.pageControl=nil;
+    self.txtDescription=nil;
+    self->folderName=nil;
+    self->tag=nil;
+    self->btnCloseShowImage = nil;
+    appDelegate.sketchesArray=nil;
+    
+
+
+}
+
 @end

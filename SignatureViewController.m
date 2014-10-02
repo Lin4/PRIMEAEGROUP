@@ -150,9 +150,7 @@ static NSMutableArray *colors;
         
     }
     
-    //UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"" message:@"Save OK" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
-    //[alertView show];
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(get) name:@"goToTransactionDisplayView" object:nil];
+    
 }
 
 -(IBAction)remove:(id)sender{

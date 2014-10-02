@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>5CCB3EF0-4976-41A6-91FC-B05E5F710DFC</string>
+	<string>971C075F-5D62-4C81-8A2D-A024813820C1</string>
 	<key>IDESourceControlProjectName</key>
 	<string>PRIMECMAPP</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>4F322513-99CC-4F3F-8F8A-DAEAEBFA717E</key>
-		<string>https://github.com/kasundissanayake/Primetec.git</string>
+		<key>DF7FE6E6-D318-4A34-8086-ABA2294F090C</key>
+		<string>https://github.com/Lin4/PRIMEAEGROUP.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>PRIMECMAPP.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>4F322513-99CC-4F3F-8F8A-DAEAEBFA717E</key>
+		<key>DF7FE6E6-D318-4A34-8086-ABA2294F090C</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/kasundissanayake/Primetec.git</string>
+	<string>https://github.com/Lin4/PRIMEAEGROUP.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>4F322513-99CC-4F3F-8F8A-DAEAEBFA717E</string>
+	<string>DF7FE6E6-D318-4A34-8086-ABA2294F090C</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>4F322513-99CC-4F3F-8F8A-DAEAEBFA717E</string>
+			<string>DF7FE6E6-D318-4A34-8086-ABA2294F090C</string>
 			<key>IDESourceControlWCCName</key>
-			<string>Primetec</string>
+			<string>PRIMEAEGROUP</string>
 		</dict>
 	</array>
 </dict>

@@ -860,13 +860,13 @@ UILabel *cno;
     return current_img;
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    pageControlBeingUsed = NO;
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    pageControlBeingUsed = NO;
-}
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+//    pageControlBeingUsed = NO;
+//}
+//
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+//    pageControlBeingUsed = NO;
+//}
 
 
 -(IBAction)doneViewImages:(id)sender{
@@ -953,5 +953,47 @@ UILabel *cno;
     } else {
         // Error handling
     }
+}
+
+-(void)viewDidUnload
+{
+
+    self.datePicker = nil;
+    self.imagePicker = nil;
+    self.isFromSketches= nil;
+    self.isFromReport =nil;
+    self.arrayImages = nil;
+    self.imageAddSubView = nil;
+    self.imgViewAdd = nil;
+    self.CNo = nil;
+    self.scrollView = nil;
+    self->popoverController =nil;
+    self->pickerView1=nil;
+    self->pickerDataArray = nil;
+    self->hotelAnnotations=nil;
+    self->tblView=nil;
+    self->tableData=nil;
+    self->pickerTag=nil;
+    self.txtSignature = nil;
+    self->btnCloseSignView = nil;
+    self->pickerViewCities = nil;
+    self->ifImage= nil;
+    self->appDelegate =nil;
+    self->imgName = nil;
+    self->count = nil;
+    self->hud=nil;
+    self->_receivedData = nil;
+    self->_receivedResponse=nil;
+    self->_connectionError=nil;
+    self->resPonse=nil;
+    self->uploading=nil;
+    self->uploadingsketch=nil;
+    self->count1=nil;
+    self->count2=nil;
+    self->comNoticeNo=nil;
+    self->isUploadingSignature=nil;
+    self->defaults=nil;
+    self->sourceDictionary=nil;
+
 }
 @end

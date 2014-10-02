@@ -15,10 +15,17 @@
 {
      UIPrintInteractionController *printController;
 }
-@property (strong, nonatomic) IBOutlet UITextView *lblProjDec;
-@property(nonatomic,strong)IBOutlet UITableView *tblView;
-@property(nonatomic,strong)IBOutlet UIView *headerView;
+
 @property(nonatomic,retain)NSString *CNo;
+
+@property (weak, nonatomic) IBOutlet UITextView *lblContractorRes;
+@property (weak, nonatomic) IBOutlet UITextField *nonComNotNo;
+@property (weak, nonatomic) IBOutlet UITextField *dateCRC;
+@property (weak, nonatomic) IBOutlet UITextView *lblProjDec;
+@property(nonatomic,weak)IBOutlet UITableView *tblView;
+@property(nonatomic,weak)IBOutlet UIView *headerView;
+
+
 @property (weak, nonatomic) IBOutlet UITextField *txtContactNo;
 @property (weak, nonatomic) IBOutlet UITextField *txtTitle;
 @property (weak, nonatomic) IBOutlet UITextField *txtProject;
@@ -31,9 +38,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtPrintedName;
 @property (weak, nonatomic) IBOutlet UITextField *txtDate;
 @property (weak, nonatomic) IBOutlet UIImageView *imgSignature;
-@property (strong, nonatomic) IBOutlet UITextView *lblContractorRes;
-@property (strong, nonatomic) IBOutlet UITextField *nonComNotNo;
-@property (strong, nonatomic) IBOutlet UITextField *dateCRC;
+
 
 -(void)populateNonComplianceForm;
 @end

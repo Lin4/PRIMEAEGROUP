@@ -1538,9 +1538,9 @@
 		FC20AE8419D5D0F00060CF76 /* CMShowImages */ = {
 			isa = PBXGroup;
 			children = (
+				4B8C47891940402F0075338B /* CMShowImagesViewController.h */,
 				4B8C478A1940402F0075338B /* CMShowImagesViewController.m */,
 				4B8C478B1940402F0075338B /* CMShowImagesViewController.xib */,
-				4B8C47891940402F0075338B /* CMShowImagesViewController.h */,
 			);
 			name = CMShowImages;
 			sourceTree = "<group>";

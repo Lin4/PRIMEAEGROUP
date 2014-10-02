@@ -21,6 +21,7 @@
 
 @property (strong, nonatomic) NSDictionary *selectedDict;
 @property(nonatomic,retain)NSString *QNo;
+
 @property (weak, nonatomic) IBOutlet UITextField *project;
 @property (weak, nonatomic) IBOutlet UITextField *itemNo;
 @property (weak, nonatomic) IBOutlet UITextField *estQty;

@@ -15,13 +15,18 @@
 {
     UIPrintInteractionController *printController;
 }
+@property(nonatomic,retain)NSString *CNo;
+@property(nonatomic,retain)NSString *sigImgName;
+@property(nonatomic,retain)IBOutlet UIImageView *imgSignature;
+@property (strong, nonatomic) IBOutlet UITextField *comNoticeNo;
 
-@property (strong, nonatomic) IBOutlet UITextView *lblProjDec;
+
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property(nonatomic,strong)IBOutlet UIView *headerView;
-@property(nonatomic,strong)IBOutlet UITableView *tblView;
+@property (weak, nonatomic) IBOutlet UITextView *lblProjDec;
+@property(nonatomic,weak)IBOutlet UIView *headerView;
+@property(nonatomic,weak)IBOutlet UITableView *tblView;
 @property (weak, nonatomic) IBOutlet UITextField *txtContractNo;
-@property (strong, nonatomic) IBOutlet UITextView *lblConRes;
+@property (weak, nonatomic) IBOutlet UITextView *lblConRes;
 @property (weak, nonatomic) IBOutlet UITextField *txtTitle;
 @property (weak, nonatomic) IBOutlet UITextField *txtProject;
 @property (weak, nonatomic) IBOutlet UITextField *txtDateIssued;
@@ -33,10 +38,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtPrintedName;
 @property (weak, nonatomic) IBOutlet UITextField *txtNoticeNo;
 @property (weak, nonatomic) IBOutlet UITextField *txtdate;
-@property(nonatomic,retain)NSString *CNo;
-@property(nonatomic,retain)NSString *sigImgName;
-@property(nonatomic,retain)IBOutlet UIImageView *imgSignature;
-@property (strong, nonatomic) IBOutlet UITextField *comNoticeNo;
+
 
 
 @end

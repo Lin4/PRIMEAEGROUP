@@ -15,10 +15,11 @@
 {
      UIPrintInteractionController *printController;
 }
-
+@property(nonatomic,retain)NSString *SMNo;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property(nonatomic,strong)IBOutlet UILabel *lblImageAttachmentTitle;
 @property(nonatomic,strong)IBOutlet UIView *viewImageAttachmentTitle;
+
 @property (weak, nonatomic) IBOutlet UITextField *txtContractor;
 @property (weak, nonatomic) IBOutlet UITextField *txtPOBox;
 @property (weak, nonatomic) IBOutlet UITextField *txtCity;
@@ -127,7 +128,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtEAmt3;
 @property (weak, nonatomic) IBOutlet UITextField *txtEAmt4;
 @property (weak, nonatomic) IBOutlet UITextField *txtEAmt5;
-@property(nonatomic,retain)NSString *SMNo;
 @property (weak, nonatomic) IBOutlet UITextField *reportNoForEdit;
 
 @end

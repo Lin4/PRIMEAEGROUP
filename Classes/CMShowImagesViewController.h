@@ -22,7 +22,6 @@
 @property (nonatomic, strong) IBOutlet UIPageControl *pageControl;
 @property (nonatomic, strong) IBOutlet UITextView *txtDescription;
 @property(nonatomic,strong) IBOutlet UIView *viewGallery;
-//@property(nonatomic,strong)IBOutlet UILabel *lblTitle;
 @property(nonatomic,assign)BOOL isFromSketches;
 @property(nonatomic,assign)BOOL isFromReport;
 @end

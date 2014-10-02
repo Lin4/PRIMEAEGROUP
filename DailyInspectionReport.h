@@ -16,7 +16,7 @@
 {
     UIPrintInteractionController *printController;
 }
-
+@property(nonatomic,retain)NSString *CNo;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UITableView *tblView;
 @property (strong, nonatomic) IBOutlet UITextView *lblProject;
@@ -50,7 +50,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtWorkDec3;
 @property (weak, nonatomic) IBOutlet UITextField *txtWorkDec2;
 @property (weak, nonatomic) IBOutlet UIImageView *imgInspectorSignature;
-@property(nonatomic,retain)NSString *CNo;
 @property (weak, nonatomic) IBOutlet UITextField *txtInspecName4;
 @property (weak, nonatomic) IBOutlet UITextField *txtInspecTitle;
 @property (weak, nonatomic) IBOutlet UITextField *txtWorkDoneDepart4;
